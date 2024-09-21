@@ -1,28 +1,22 @@
+from django.contrib import admin
 from django.urls import path
 from tracker.views import (
     playlists_view, 
     add_playlist, 
-    video_detail, 
-    mark_video_watched, 
-    submit_feedback,
-    project_idea_list,
-    add_project_idea,
-    update_project_idea,
-    project_detail
+    mark_as_watched,mark_unwatched, dashboard,
+    signup_view, login_view, logout_view
 )
-from django.contrib import admin
-from tracker.views import display_youtube_playlist_data
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('playlists/', playlists_view, name='playlists_view'),
+    # path('signup/', signup_view, name='signup'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('my-playlists/', playlists_view, name='playlists_view'),
+    path('mark-watched/<int:video_id>/', mark_as_watched, name='mark_watched'),
+    path('mark_unwatched/<int:video_id>/', mark_unwatched, name='mark_unwatched'),
     path('add_playlist/', add_playlist, name='add_playlist'),
-    path('youtube-playlist/', display_youtube_playlist_data, name='youtube_playlist'),
-    # path('videos/<int:video_id>/mark_watched/', mark_video_watched, name='mark_video_watched'),
-    # path('videos/<int:video_id>/', video_detail, name='video_detail'),
-    # path('videos/<int:video_id>/submit_feedback/', submit_feedback, name='submit_feedback'),
-    # path('projects/', project_idea_list, name='project_idea_list'),
-    # path('projects/add/', add_project_idea, name='add_project_idea'),
-    # path('projects/<int:project_id>/edit/', update_project_idea, name='update_project_idea'),
-    # path('projects/<int:project_id>/', project_detail, name='project_detail'),
+
+    path('dashboard/', dashboard, name='dashboard'),
 ]

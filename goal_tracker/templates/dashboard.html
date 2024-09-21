@@ -1,8 +1,37 @@
-{% extends 'base.html' %}
-
-{% block title %}Dashboard{% endblock %}
-
+{% extends 'base.html' %} 
+{% block title %}YouTube Playlists Dashboard{% endblock title %} 
 {% block content %}
-<h1>Welcome to the YouTube Tracker Dashboard</h1>
-<p>Track your playlists and manage your project ideas here.</p>
+
+<h1>YouTube Playlists</h1>
+
+<div class="next-video">
+  <h2>Next Video to Watch</h2>
+  <div class="next-video-list">
+    {% for playlist in playlists %} {% if playlist.next_video_to_watch %}
+    <div class="video-card">
+      <img
+        src="{{ playlist.next_video_to_watch.thumbnail_url }}"
+        alt="{{ playlist.next_video_to_watch.title }}"
+        class="video-thumbnail"
+      />
+      <h3 class="video-title">{{ playlist.next_video_to_watch.title }}</h3>
+      <div class="video-buttons">
+        <a
+          href="{{ playlist.next_video_to_watch.url }}"
+          target="_blank"
+          class="watch-now"
+          >Watch Now</a
+        >
+        <form
+          method="POST"
+          action="{% url 'mark_watched' playlist.next_video_to_watch.id %}"
+        >
+          {% csrf_token %}
+          <button type="submit" class="mark-watched">Mark as Watched</button>
+        </form>
+      </div>
+    </div>
+    {% endif %} {% endfor %}
+  </div>
+</div>
 {% endblock %}

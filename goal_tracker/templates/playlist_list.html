@@ -1,31 +1,82 @@
-{% extends 'base.html' %}
-
-{% block title %}Playlists{% endblock %}
-
+{% extends 'base.html' %} {% block title %}YouTube Playlists{% endblock title %}
 {% block content %}
-<h1>Your Playlists</h1>
 
-{% if playlists %}
-    {% for playlist in playlists %}
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">{{ playlist.title }}</h5>
-                <h6>Watched Videos: {{ playlist.watched_videos|length }}</h6>
-                <h6>Upcoming Videos: {{ playlist.upcoming_videos|length }}</h6>
+<h1>YouTube Playlists</h1>
 
-                <!-- Debug: Check the structure and content of the playlist -->
-                <p>DEBUG - Playlist Data: {{ playlist }}</p>
+<div class="next-video">
+  <h2>Next Video to Watch</h2>
+  <div class="next-video-list">
+    {% for playlist in playlists %} {% if playlist.next_video_to_watch %}
+    <div class="video-card">
+      <img
+        src="{{ playlist.next_video_to_watch.thumbnail_url }}"
+        alt="{{ playlist.next_video_to_watch.title }}"
+        class="video-thumbnail"
+      />
+      <h3 class="video-title">{{ playlist.next_video_to_watch.title }}</h3>
+      <div class="video-buttons">
+        <a
+          href="{{ playlist.next_video_to_watch.url }}"
+          target="_blank"
+          class="watch-now"
+          >Watch Now</a
+        >
+        <form
+          method="POST"
+          action="{% url 'mark_watched' playlist.next_video_to_watch.id %}"
+        >
+          {% csrf_token %}
+          <button type="submit" class="mark-watched">Mark as Watched</button>
+        </form>
+      </div>
+    </div>
+    {% endif %} {% endfor %}
+  </div>
+</div>
 
-                {% if playlist.next_video_to_watch %}
-                    <p>Next Video to Watch: {{ playlist.next_video_to_watch.title }}</p>
-                    <a href="{{ playlist.next_video_to_watch.url }}" class="btn btn-primary">Watch Now</a>
-                {% else %}
-                    <p>No upcoming videos</p>
-                {% endif %}
-            </div>
-        </div>
+{% for playlist in playlists %}
+<div class="playlist-container">
+  <h2>{{ playlist.title }}</h2>
+  <div class="video-list">
+    {% for video in playlist.upcoming_videos %}
+    <div class="video-card">
+      <img
+        src="{{ video.thumbnail_url }}"
+        alt="{{ video.title }}"
+        class="video-thumbnail"
+      />
+      <h3 class="video-title">{{ video.title }}</h3>
+      <div class="video-buttons">
+        <a href="{{ video.url }}" target="_blank" class="watch-now"
+          >Watch Now</a
+        >
+        <form method="POST" action="{% url 'mark_watched' video.id %}">
+          {% csrf_token %}
+          <button type="submit" class="mark-watched">Mark as Watched</button>
+        </form>
+      </div>
+    </div>
     {% endfor %}
-{% else %}
-    <p>No playlists available</p>
-{% endif %}
-{% endblock %}
+  </div>
+
+  <!-- Watched Videos Section -->
+  <div class="watched-section">
+    <h2>Watched Videos</h2>
+    <div class="video-list">
+      {% for video in playlist.watched_videos %}
+      <a href="{{ video.url }}" target="_blank">
+        <div class="video-card">
+          <img
+            src="{{ video.thumbnail_url }}"
+            alt="{{ video.title }}"
+            class="video-thumbnail"
+          />
+          <h3 class="video-title">{{ video.title }}</h3>
+          <div class="watched">Already Watched</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endfor %} {% endblock %}
