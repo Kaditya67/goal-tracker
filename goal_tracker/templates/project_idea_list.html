@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Project Ideas{% endblock %}
+
+{% block content %}
+<h1>Project Ideas</h1>
+<a href="{% url 'add_project_idea' %}" class="btn btn-primary mb-3">Add Project Idea</a>
+
+<ul class="list-group">
+    {% for project in projects %}
+    <li class="list-group-item">
+        <h5>{{ project.title }}</h5>
+        <p>{{ project.description }}</p>
+        <p>Status: {{ project.progress }}</p>
+        <a href="{% url 'project_detail' project.id %}" class="btn btn-info">View Details</a>
+        <a href="{% url 'update_project_idea' project.id %}" class="btn btn-warning">Edit</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

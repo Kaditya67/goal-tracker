@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Project Idea{% endblock %}
+
+{% block content %}
+<h1>Update Project Idea</h1>
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="title" class="form-control" value="{{ project.title }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" class="form-control" required>{{ project.description }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="progress" class="form-label">Progress</label>
+        <input type="text" name="progress" class="form-control" value="{{ project.progress }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Project</button>
+</form>
+{% endblock %}

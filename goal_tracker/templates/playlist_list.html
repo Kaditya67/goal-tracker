@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Playlists{% endblock %}
+
+{% block content %}
+<h1>Your Playlists</h1>
+
+{% if playlists %}
+    {% for playlist in playlists %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ playlist.title }}</h5>
+                <h6>Watched Videos: {{ playlist.watched_videos|length }}</h6>
+                <h6>Upcoming Videos: {{ playlist.upcoming_videos|length }}</h6>
+
+                <!-- Debug: Check the structure and content of the playlist -->
+                <p>DEBUG - Playlist Data: {{ playlist }}</p>
+
+                {% if playlist.next_video_to_watch %}
+                    <p>Next Video to Watch: {{ playlist.next_video_to_watch.title }}</p>
+                    <a href="{{ playlist.next_video_to_watch.url }}" class="btn btn-primary">Watch Now</a>
+                {% else %}
+                    <p>No upcoming videos</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No playlists available</p>
+{% endif %}
+{% endblock %}
