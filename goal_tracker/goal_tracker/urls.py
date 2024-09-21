@@ -11,7 +11,7 @@ from tracker.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('signup/', signup_view, name='signup'),
-    path('login/', login_view, name='login'),
+    path('', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('my-playlists/', playlists_view, name='playlists_view'),
     path('mark-watched/<int:video_id>/', mark_as_watched, name='mark_watched'),

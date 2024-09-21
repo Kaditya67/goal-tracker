@@ -28,7 +28,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return redirect('dashboard')  # Redirect to your dashboard
-    return render(request, 'login.html')
+    return render(request, 'admin/login.html')
 
 @login_required
 def logout_view(request):
