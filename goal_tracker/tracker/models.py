@@ -37,7 +37,7 @@ class YouTubePlaylist(models.Model):
         params = {
             'part': 'snippet',
             'playlistId': self.playlist_id,
-            'maxResults': 50,  # Fetch up to 50 videos at a time
+            'maxResults': 200,  # Fetch up to 50 videos at a time
             'key': api_key
         }
 

@@ -1,0 +1,82 @@
+{% extends 'base.html' %} {% block title %}YouTube Playlists{% endblock title %}
+{% block content %}
+
+<h1>YouTube Playlists</h1>
+
+<div class="next-video">
+  <h2>Next Video to Watch</h2>
+  <div class="next-video-list">
+    {% for playlist in playlists %} {% if playlist.next_video_to_watch %}
+    <div class="video-card">
+      <img
+        src="{{ playlist.next_video_to_watch.thumbnail_url }}"
+        alt="{{ playlist.next_video_to_watch.title }}"
+        class="video-thumbnail"
+      />
+      <h3 class="video-title">{{ playlist.next_video_to_watch.title }}</h3>
+      <div class="video-buttons">
+        <a
+          href="{{ playlist.next_video_to_watch.url }}"
+          target="_blank"
+          class="watch-now"
+          >Watch Now</a
+        >
+        <form
+          method="POST"
+          action="{% url 'mark_watched' playlist.next_video_to_watch.id %}"
+        >
+          {% csrf_token %}
+          <button type="submit" class="mark-watched">Mark as Watched</button>
+        </form>
+      </div>
+    </div>
+    {% endif %} {% endfor %}
+  </div>
+</div>
+
+{% for playlist in playlists %}
+<div class="playlist-container">
+  <h2>{{ playlist.title }}</h2>
+  <div class="video-list">
+    {% for video in playlist.upcoming_videos %}
+    <div class="video-card">
+      <img
+        src="{{ video.thumbnail_url }}"
+        alt="{{ video.title }}"
+        class="video-thumbnail"
+      />
+      <h3 class="video-title">{{ video.title }}</h3>
+      <div class="video-buttons">
+        <a href="{{ video.url }}" target="_blank" class="watch-now"
+          >Watch Now</a
+        >
+        <form method="POST" action="{% url 'mark_watched' video.id %}">
+          {% csrf_token %}
+          <button type="submit" class="mark-watched">Mark as Watched</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Watched Videos Section -->
+  <div class="watched-section">
+    <h2>Watched Videos</h2>
+    <div class="video-list">
+      {% for video in playlist.watched_videos %}
+      <a href="{{ video.url }}" target="_blank">
+        <div class="video-card">
+          <img
+            src="{{ video.thumbnail_url }}"
+            alt="{{ video.title }}"
+            class="video-thumbnail"
+          />
+          <h3 class="video-title">{{ video.title }}</h3>
+          <div class="watched">Already Watched</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endfor %} {% endblock %}
