@@ -15,8 +15,8 @@ import os
 
 from decouple import config
 
-# Load the YouTube API key from the .env file
-YOUTUBE_API_KEY = config('YOUTUBE_API_KEY')
+# Load the YouTube API key from the .env file or environment
+YOUTUBE_API_KEY = config('YOUTUBE_API_KEY', default='')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
